@@ -1,5 +1,7 @@
 module Fsy
 
+open System.IO
+
 let interpet code =
     let memory = Array.zeroCreate 30000
     let mutable ptr = 0
@@ -52,4 +54,10 @@ let interpet code =
     |> Seq.toList
     |> read
 
-stdin.ReadLine() |> interpet
+[<EntryPoint>]
+let main args =
+    let filePath = args.[0]
+    File.ReadAllLines(filePath)
+    |> String.concat ""
+    |> interpet
+    0
