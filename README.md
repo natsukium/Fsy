@@ -9,5 +9,5 @@ Fsy [fzi] is a Brainf*ck interpreter written in F#.
 
 ```
 cd src/Fsy
-dotnet run < hello.bf
+dotnet run hello.bf
 ```
