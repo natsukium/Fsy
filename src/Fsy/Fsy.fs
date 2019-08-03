@@ -4,7 +4,12 @@ let interpet code =
     let memory = Array.zeroCreate 30000
     let mutable ptr = 0
     let mutable bracketsCounter = 0
-    let mutable loopCode = []
+    let maxLoop = 10
+
+    let loopCode =
+        [| for _ in 1..maxLoop -> [] |]
+
+    let mutable nestCounter = 0
 
     let rec read code =
         match code with
@@ -26,16 +31,21 @@ let interpet code =
                 match c with
                 | '[' ->
                     bracketsCounter <- bracketsCounter + 1
-                    loopCode <- '[' :: loopCode
+                    loopCode.[nestCounter] <- '[' :: loopCode.[nestCounter]
                 | ']' ->
                     bracketsCounter <- bracketsCounter - 1
-                    if bracketsCounter <> 0 then loopCode <- ']' :: loopCode
+                    if bracketsCounter <> 0 then
+                        loopCode.[nestCounter] <- ']' :: loopCode.[nestCounter]
                     else
-                        loopCode <- List.rev loopCode
-                        [ for _ in 1..memory.[ptr] -> read loopCode ]
+                        loopCode.[nestCounter] <- List.rev
+                                                      loopCode.[nestCounter]
+                        nestCounter <- nestCounter + 1
+                        [ for _ in 1..memory.[ptr] ->
+                              read loopCode.[nestCounter - 1] ]
                         |> ignore
-                        loopCode <- []
-                | any -> loopCode <- any :: loopCode
+                        nestCounter <- nestCounter - 1
+                        loopCode.[nestCounter] <- []
+                | any -> loopCode.[nestCounter] <- any :: loopCode.[nestCounter]
             read code
         | _ -> ptr <- ptr
     code
