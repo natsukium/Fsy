@@ -26,7 +26,7 @@ let interpet code =
                     memory.[ptr]
                     |> char
                     |> printf "%O"
-                | ',' -> memory.[ptr] <- stdin.ReadLine() |> int
+                | ',' -> memory.[ptr] <- stdin.ReadLine().[0] |> int
                 | '[' -> bracketsCounter <- bracketsCounter + 1
                 | _ -> ptr <- ptr
             else
