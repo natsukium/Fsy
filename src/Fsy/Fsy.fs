@@ -28,7 +28,7 @@ let interpet code =
                     |> printf "%O"
                 | ',' -> memory.[ptr] <- stdin.ReadLine().[0] |> int
                 | '[' -> bracketsCounter <- bracketsCounter + 1
-                | _ -> ptr <- ptr
+                | _ -> ()
             else
                 match c with
                 | '[' ->
@@ -49,7 +49,7 @@ let interpet code =
                         loopCode.[nestCounter] <- []
                 | any -> loopCode.[nestCounter] <- any :: loopCode.[nestCounter]
             read code
-        | _ -> ptr <- ptr
+        | [] -> ()
     code
     |> Seq.toList
     |> read
