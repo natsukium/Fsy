@@ -2,7 +2,7 @@ module Fsy
 
 open System.IO
 
-let interpet code =
+let interpret code =
     let memory = Array.zeroCreate 30000
     let mutable ptr = 0
     let mutable bracketsCounter = 0
@@ -59,5 +59,5 @@ let main args =
     let filePath = args.[0]
     File.ReadAllLines(filePath)
     |> String.concat ""
-    |> interpet
+    |> interpret
     0
